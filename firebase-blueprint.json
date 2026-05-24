@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the library (Admin or Member)",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "member"] },
+        "borrowedCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role", "borrowedCount"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "A book in the library catalog",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "isbn": { "type": "string" },
+        "coverUrl": { "type": "string" },
+        "description": { "type": "string" },
+        "totalInventory": { "type": "integer" },
+        "availableInventory": { "type": "integer" }
+      },
+      "required": ["title", "author", "totalInventory", "availableInventory"]
+    },
+    "Borrow": {
+      "title": "Borrow",
+      "description": "A record of a borrowed book",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "borrowedAt": { "type": "string", "format": "date-time" },
+        "dueDate": { "type": "string", "format": "date-time" },
+        "returnedAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["active", "returned", "overdue"] }
+      },
+      "required": ["userId", "bookId", "borrowedAt", "dueDate", "status"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "books/{bookId}": {
+      "schema": { "$ref": "#/entities/Book" },
+      "description": "The library catalog"
+    },
+    "borrows/{borrowId}": {
+      "schema": { "$ref": "#/entities/Borrow" },
+      "description": "Borrow history and active timers"
+    }
+  }
+}
